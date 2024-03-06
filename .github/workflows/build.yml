@@ -23,6 +23,8 @@ jobs:
   runs-on: ubuntu-latest
   strategy:
     matrix:
+      our_version:
+        - "0.1.2"
       python_version:
         - "3.9"
       include:
@@ -53,8 +55,8 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-0.1.0-${BUILD_TAG}-${{ matrix.abi_tag }}-manylinux_2_31_x86_64.whl"
-        mv dist/redis_stack_wheel-0.1.0-py3-none-any.whl $WHL_NAME
+        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-manylinux_2_31_x86_64.whl"
+        mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
     - name: Upload distribution
@@ -68,6 +70,8 @@ jobs:
   runs-on: macOS-11
   strategy:
     matrix:
+      our_version:
+        - "0.1.2"
       python_version:
         - "3.9"
       include:
@@ -98,8 +102,8 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-0.1.0-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_11_0_x86_64.whl"
-        mv dist/redis_stack_wheel-0.1.0-py3-none-any.whl $WHL_NAME
+        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_11_0_x86_64.whl"
+        mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
     - name: Upload distribution
