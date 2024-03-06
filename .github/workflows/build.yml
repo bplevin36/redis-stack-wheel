@@ -13,23 +13,30 @@ jobs:
   steps:
     - uses: actions/checkout@v4
     - name: Upload checkout
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: checkout
         path: .
 
- download-redis:
+ build-linux:
   needs: checkout
   runs-on: ubuntu-latest
+  strategy:
+    matrix:
+      python_version:
+        - "3.9"
+      include:
+        - python_version: "3.9"
+          abi_tag: "cp39-cp39"
   steps:
     - name: Download checkout
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: checkout
         path: .
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.9.16'
+        python-version: ${{ matrix.python_version }}
         cache: 'pip'
     - name: Download redis
       run: |
@@ -42,8 +49,61 @@ jobs:
       run: python -m build --wheel
     - name: List dir for sanity checking
       run: ls -R
+
+    - name: Rename wheel
+      run: |
+        BUILD_TAG=$(date -u "+%Y%m%d%H%M")
+        WHL_NAME="dist/redis_stack_wheel-0.1.0-${BUILD_TAG}-${{ matrix.abi_tag }}-manylinux_2_31_x86_64.whl"
+        mv dist/redis_stack_wheel-0.1.0-py3-none-any.whl $WHL_NAME
+        echo $WHL_NAME
+
     - name: Upload distribution
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
+      with:
+        name: distribution
+        path: dist/
+
+ build-macos:
+  needs: checkout
+  runs-on: macOS-11
+  strategy:
+    matrix:
+      python_version:
+        - "3.9"
+      include:
+        - python_version: "3.9"
+          abi_tag: "cp39-cp39"
+  steps:
+    - name: Download checkout
+      uses: actions/download-artifact@v4
+      with:
+        name: checkout
+        path: .
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python_version }}
+        cache: 'pip'
+    - name: Download redis
+      run: |
+        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.catalina.x86_64.zip
+        tar -xvzf redis-stack-server-7.2.0-v9.catalina.x86_64.zip
+        rm redis-stack-server-7.2.0-v9.catalina.x86_64.zip
+        mv redis-stack-server-7.2.0-v9 redis_stack_wheel/redis-stack-server
+    - run: python -m pip install build
+    - name: Build
+      run: python -m build --wheel
+    - name: List dir for sanity checking
+      run: ls -R
+
+    - name: Rename wheel
+      run: |
+        BUILD_TAG=$(date -u "+%Y%m%d%H%M")
+        WHL_NAME="dist/redis_stack_wheel-0.1.0-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_11_0_x86_64"
+        mv dist/redis_stack_wheel-0.1.0-py3-none-any.whl $WHL_NAME
+        echo $WHL_NAME
+
+    - name: Upload distribution
+      uses: actions/upload-artifact@v4
       with:
         name: distribution
         path: dist/

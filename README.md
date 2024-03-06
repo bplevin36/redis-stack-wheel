@@ -6,9 +6,9 @@ To install the pre-compiled Redis binaries:
 pip install redis-stack-wheel==<redis-version>
 ```
 
-Supported versions of Redis:
+Supported versions of Redis Stack:
 
-- `7.2.0`
+- `7.2.0-v9`
 
 Supported platforms:
 
@@ -25,4 +25,5 @@ To get the paths of pre-compiled Redis binaries:
 import redis_stack_wheel
 
 redis_stack_wheel.REDIS_STACK_SERVER_PATH  # redis-stack-server
+redis_stack_wheel.REDIS_CLI_PATH  # redis-cli
 ```
