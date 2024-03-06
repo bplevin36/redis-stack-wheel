@@ -98,7 +98,7 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-0.1.0-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_11_0_x86_64"
+        WHL_NAME="dist/redis_stack_wheel-0.1.0-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_11_0_x86_64.whl"
         mv dist/redis_stack_wheel-0.1.0-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
