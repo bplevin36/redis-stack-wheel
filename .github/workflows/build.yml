@@ -60,7 +60,7 @@ jobs:
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: distribution
+        name: distribution-linux
         path: dist/
 
  build-macos:
@@ -105,5 +105,5 @@ jobs:
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: distribution
+        name: distribution-macos
         path: dist/
