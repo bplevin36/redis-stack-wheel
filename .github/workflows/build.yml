@@ -24,7 +24,7 @@ jobs:
   strategy:
     matrix:
       our_version:
-        - "0.1.2"
+        - "0.1.3"
       python_version:
         - "3.9"
       include:
@@ -73,7 +73,7 @@ jobs:
   strategy:
     matrix:
       our_version:
-        - "0.1.2"
+        - "0.1.3"
       python_version:
         - "3.9"
       include:
