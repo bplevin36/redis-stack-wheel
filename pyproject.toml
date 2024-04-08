@@ -1,6 +1,6 @@
 [project]
 name = "redis-stack-wheel"
-version = "0.1.3"
+version = "0.1.4"
 description = "Wheels that bundle precompiled redis-stack-server binaries for the appropriate platform. Currently on Redis Stack v7.2.0-v9"
 license = {file = "LICENSE"}
 authors = [
