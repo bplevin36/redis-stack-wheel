@@ -28,9 +28,12 @@ jobs:
         - "0.1.4"
       python_version:
         - "3.9"
+        - "3.11"
       include:
         - python_version: "3.9"
           abi_tag: "cp39-cp39"
+        - python_version: "3.11"
+          abi_tag: "cp311-cp311"
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v4
@@ -77,12 +80,9 @@ jobs:
         - "0.1.4"
       python_version:
         - "3.9"
-        - "3.11"
       include:
         - python_version: "3.9"
           abi_tag: "cp39-cp39"
-        - python_version: "3.11"
-          abi_tag: "cp311-cp311"
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v4
