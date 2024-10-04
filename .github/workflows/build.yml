@@ -77,9 +77,12 @@ jobs:
         - "0.1.4"
       python_version:
         - "3.9"
+        - "3.11"
       include:
         - python_version: "3.9"
           abi_tag: "cp39-cp39"
+        - python_version: "3.11"
+          abi_tag: "cp311-cp311"
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v4
@@ -136,9 +139,12 @@ jobs:
         - "0.1.4"
       python_version:
         - "3.9"
+        - "3.11"
       include:
         - python_version: "3.9"
           abi_tag: "cp39-cp39"
+        - python_version: "3.11"
+          abi_tag: "cp311-cp311"
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v4
@@ -176,7 +182,7 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_arm.whl"
+        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_arm64.whl"
         mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
