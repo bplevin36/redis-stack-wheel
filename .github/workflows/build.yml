@@ -43,9 +43,9 @@ jobs:
         cache: 'pip'
     - name: Download redis
       run: |
-        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.focal.x86_64.tar.gz
-        tar -xvzf redis-stack-server-7.2.0-v9.focal.x86_64.tar.gz
-        rm redis-stack-server-7.2.0-v9.focal.x86_64.tar.gz
+        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.focal.x86_64.tar.gz -O redis-stack.tar.gz
+        tar -xvzf redis-stack.tar.gz
+        rm redis-stack.tar.gz
         mv redis-stack-server-7.2.0-v9 src/redis_stack_wheel/redis-stack-server
     - name: Overwrite server startup file
       run: cp overwrite/redis-stack-server src/redis_stack_wheel/redis-stack-server/bin/redis-stack-server
@@ -102,9 +102,9 @@ jobs:
       
     - name: Download redis
       run: |
-        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.catalina.x86_64.zip
-        unzip -d redis-stack-server redis-stack-server-7.2.0-v9.catalina.x86_64.zip
-        rm redis-stack-server-7.2.0-v9.catalina.x86_64.zip
+        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.catalina.x86_64.zip -O redis-stack.zip
+        unzip -d redis-stack.zip
+        rm redis-stack.zip
         mv redis-stack-server src/redis_stack_wheel/redis-stack-server
     - name: Overwrite server startup file
       run: cp overwrite/redis-stack-server src/redis_stack_wheel/redis-stack-server/bin/redis-stack-server
@@ -125,4 +125,63 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: distribution-macos-x64-${{ matrix.python_version }}
+        path: dist/
+
+ build-macos-arm:
+  needs: checkout
+  runs-on: macOS-14
+  strategy:
+    matrix:
+      our_version:
+        - "0.1.4"
+      python_version:
+        - "3.9"
+      include:
+        - python_version: "3.9"
+          abi_tag: "cp39-cp39"
+  steps:
+    - name: Download checkout
+      uses: actions/download-artifact@v4
+      with:
+        name: checkout
+        path: .
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python_version }}
+        cache: 'pip'
+
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+
+    - name: Set up Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer      
+
+    - name: Show current version of Xcode
+      run: xcodebuild -version
+      
+    - name: Download redis
+      run: |
+        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.monterey.arm64.zip -O redis-stack.zip
+        unzip -d redis-stack.zip
+        rm redis-stack.zip
+        mv redis-stack-server src/redis_stack_wheel/redis-stack-server
+    - name: Overwrite server startup file
+      run: cp overwrite/redis-stack-server src/redis_stack_wheel/redis-stack-server/bin/redis-stack-server
+    - run: python -m pip install build
+    - name: Build
+      run: python -m build --wheel
+    - name: List dir for sanity checking
+      run: ls -R
+
+    - name: Rename wheel
+      run: |
+        BUILD_TAG=$(date -u "+%Y%m%d%H%M")
+        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_arm.whl"
+        mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
+        echo $WHL_NAME
+
+    - name: Upload distribution
+      uses: actions/upload-artifact@v4
+      with:
+        name: distribution-macos-arm-${{ matrix.python_version }}
         path: dist/
