@@ -103,7 +103,7 @@ jobs:
     - name: Download redis
       run: |
         wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.catalina.x86_64.zip -O redis-stack.zip
-        unzip -d redis-stack.zip
+        unzip -d redis-stack-server redis-stack.zip
         rm redis-stack.zip
         mv redis-stack-server src/redis_stack_wheel/redis-stack-server
     - name: Overwrite server startup file
@@ -162,7 +162,7 @@ jobs:
     - name: Download redis
       run: |
         wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.monterey.arm64.zip -O redis-stack.zip
-        unzip -d redis-stack.zip
+        unzip -d redis-stack-server redis-stack.zip
         rm redis-stack.zip
         mv redis-stack-server src/redis_stack_wheel/redis-stack-server
     - name: Overwrite server startup file
