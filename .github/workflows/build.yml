@@ -4,6 +4,7 @@ on:
  push:
   branches:
     - main
+    - paulan/new_builds
  workflow_call:
 
 jobs:
@@ -64,10 +65,10 @@ jobs:
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: distribution-linux
+        name: distribution-linux-${{ matrix.python_version }}
         path: dist/
 
- build-macos:
+ build-macos-x64:
   needs: checkout
   runs-on: macOS-11
   strategy:
@@ -113,5 +114,5 @@ jobs:
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: distribution-macos
+        name: distribution-macos-x64-${{ matrix.python_version }}
         path: dist/
