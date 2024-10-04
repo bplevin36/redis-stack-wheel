@@ -70,7 +70,7 @@ jobs:
 
  build-macos-x64:
   needs: checkout
-  runs-on: macOS-11
+  runs-on: macOS-13
   strategy:
     matrix:
       our_version:
@@ -90,6 +90,16 @@ jobs:
       with:
         python-version: ${{ matrix.python_version }}
         cache: 'pip'
+
+    - name: List available Xcode versions
+      run: ls /Applications | grep Xcode
+
+    - name: Set up Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer      
+
+    - name: Show current version of Xcode
+      run: xcodebuild -version
+      
     - name: Download redis
       run: |
         wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.catalina.x86_64.zip
@@ -107,7 +117,7 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_11_0_x86_64.whl"
+        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_x86_64.whl"
         mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
