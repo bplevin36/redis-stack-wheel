@@ -73,6 +73,7 @@ jobs:
 
  build-macos-x64:
   needs: checkout
+  # macOS-13 is Intel runner!
   runs-on: macOS-13
   strategy:
     matrix:
@@ -132,6 +133,7 @@ jobs:
 
  build-macos-arm:
   needs: checkout
+  # macOS-13 is ARM runner!
   runs-on: macOS-14
   strategy:
     matrix:
