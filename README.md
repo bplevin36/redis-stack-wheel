@@ -12,12 +12,14 @@ Supported versions of Redis Stack:
 
 Supported platforms:
 
-- `manylinux2014_x86_64`
-- `macosx_11_0_x86_64`
+- `manylinux_2_31_x86_64`
+- `macosx_14_0_x86_64`
+- `macosx_14_0_arm64`
 
 Supported python versions:
 
 - `cp39`
+- `cp311` (except mac x64)
 
 To get the paths of pre-compiled Redis binaries:
 
