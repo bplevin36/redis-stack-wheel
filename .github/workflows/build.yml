@@ -8,8 +8,11 @@ on:
 
  workflow_call:
 
-jobs:
+env:
+  # set PACKAGE_VERSION in a central place, needs to match pyproject.toml
+  PACKAGE_VERSION: "0.1.5"
 
+jobs:
  checkout:
   runs-on: ubuntu-latest
   steps:
@@ -25,8 +28,6 @@ jobs:
   runs-on: ubuntu-latest
   strategy:
     matrix:
-      our_version:
-        - "0.1.5"
       python_version:
         - "3.9"
         - "3.11"
@@ -62,8 +63,8 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-manylinux_2_31_x86_64.whl"
-        mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
+        WHL_NAME="dist/redis_stack_wheel-${PACKAGE_VERSION}-${BUILD_TAG}-${{ matrix.abi_tag }}-manylinux_2_31_x86_64.whl"
+        mv dist/redis_stack_wheel-${PACKAGE_VERSION}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
     - name: Upload distribution
@@ -78,8 +79,6 @@ jobs:
   runs-on: macOS-13
   strategy:
     matrix:
-      our_version:
-        - "0.1.4"
       python_version:
         - "3.9"
       include:
@@ -122,8 +121,8 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_x86_64.whl"
-        mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
+        WHL_NAME="dist/redis_stack_wheel-${PACKAGE_VERSION}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_x86_64.whl"
+        mv dist/redis_stack_wheel-${PACKAGE_VERSION}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
     - name: Upload distribution
@@ -138,8 +137,6 @@ jobs:
   runs-on: macOS-14
   strategy:
     matrix:
-      our_version:
-        - "0.1.4"
       python_version:
         - "3.9"
         - "3.11"
@@ -185,8 +182,8 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-${{ matrix.our_version }}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_arm64.whl"
-        mv dist/redis_stack_wheel-${{ matrix.our_version }}-py3-none-any.whl $WHL_NAME
+        WHL_NAME="dist/redis_stack_wheel-${PACKAGE_VERSION}-${BUILD_TAG}-${{ matrix.abi_tag }}-macosx_14_0_arm64.whl"
+        mv dist/redis_stack_wheel-${PACKAGE_VERSION}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
     - name: Upload distribution
