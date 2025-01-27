@@ -83,6 +83,8 @@ jobs:
     matrix:
       python_version:
         - "3.9"
+      redis_version:
+        - "7.4.0-v1"
       include:
         - python_version: "3.9"
           abi_tag: "cp39-cp39"
@@ -108,7 +110,7 @@ jobs:
       
     - name: Download redis
       run: |
-        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.catalina.x86_64.zip -O redis-stack.zip
+        wget https://packages.redis.io/redis-stack/redis-stack-server-${{ matrix.redis_version }}.catalina.x86_64.zip -O redis-stack.zip
         unzip -d redis-stack-server redis-stack.zip
         rm redis-stack.zip
         mv redis-stack-server src/redis_stack_wheel/redis-stack-server
@@ -142,6 +144,8 @@ jobs:
       python_version:
         - "3.9"
         - "3.11"
+      redis_version:
+        - "7.4.0-v1"
       include:
         - python_version: "3.9"
           abi_tag: "cp39-cp39"
@@ -162,14 +166,14 @@ jobs:
       run: ls /Applications | grep Xcode
 
     - name: Set up Xcode version
-      run: sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer      
+      run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
 
     - name: Show current version of Xcode
       run: xcodebuild -version
       
     - name: Download redis
       run: |
-        wget https://packages.redis.io/redis-stack/redis-stack-server-7.2.0-v9.monterey.arm64.zip -O redis-stack.zip
+        wget https://packages.redis.io/redis-stack/redis-stack-server-${{ matrix.redis_version }}.monterey.arm64.zip -O redis-stack.zip
         unzip -d redis-stack-server redis-stack.zip
         rm redis-stack.zip
         mv redis-stack-server src/redis_stack_wheel/redis-stack-server
