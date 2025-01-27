@@ -32,7 +32,7 @@ jobs:
       python_version:
         - "3.11"
       include:
-        - python_version: "3.9"
+        - python_version: "3.11"
           # the wheels end up being the same for all Linux python versions because it's just binaries
           abi_tag: "py3-none"
   steps:
