@@ -3,12 +3,10 @@
 To install the pre-compiled Redis binaries:
 
 ```sh
-pip install redis-stack-wheel==<redis-version>
+pip install redis-stack-wheel
 ```
 
-Supported versions of Redis Stack:
-
-- `7.2.0-v9`
+Currently on Redis Stack version `7.4.0-v1`
 
 Supported platforms:
 
