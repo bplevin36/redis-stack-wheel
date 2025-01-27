@@ -10,7 +10,7 @@ on:
 
 env:
   # set PACKAGE_VERSION in a central place, needs to match pyproject.toml
-  PACKAGE_VERSION: "0.1.6"
+  PACKAGE_VERSION: "0.1.7"
   REDIS_VERSION: "7.4.0-v1"
 
 jobs:
