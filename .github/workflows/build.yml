@@ -10,7 +10,7 @@ on:
 
 env:
   # set PACKAGE_VERSION in a central place, needs to match pyproject.toml
-  PACKAGE_VERSION: "0.1.7"
+  PACKAGE_VERSION: "0.1.8"
   REDIS_VERSION: "7.4.0-v1"
 
 jobs:
@@ -30,11 +30,19 @@ jobs:
   strategy:
     matrix:
       python_version:
+        # the wheels end up being the same for all Linux python versions because it's just binaries
         - "3.11"
+      manylinux_version:
+        - "manylinux_2_31"
+        - "manylinux_2_38"
       include:
         - python_version: "3.11"
-          # the wheels end up being the same for all Linux python versions because it's just binaries
           abi_tag: "py3-none"
+        # these values manually determined by doing a test build and running auditwheel
+        - manylinux_version: "manylinux_2_31"
+          ubuntu_version: focal
+        - manylinux_version: "manylinux_2_38"
+          ubuntu_version: jammy
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v4
@@ -47,7 +55,7 @@ jobs:
         cache: 'pip'
     - name: Download redis
       run: |
-        wget https://packages.redis.io/redis-stack/redis-stack-server-${REDIS_VERSION}.focal.x86_64.tar.gz -O redis-stack.tar.gz
+        wget https://packages.redis.io/redis-stack/redis-stack-server-${REDIS_VERSION}.${{ matrix.ubuntu_version }}.x86_64.tar.gz -O redis-stack.tar.gz
         tar -xvzf redis-stack.tar.gz
         rm redis-stack.tar.gz
         mv redis-stack-server-${REDIS_VERSION} src/redis_stack_wheel/redis-stack-server
@@ -62,14 +70,14 @@ jobs:
     - name: Rename wheel
       run: |
         BUILD_TAG=$(date -u "+%Y%m%d%H%M")
-        WHL_NAME="dist/redis_stack_wheel-${PACKAGE_VERSION}-${BUILD_TAG}-${{ matrix.abi_tag }}-manylinux_2_31_x86_64.whl"
+        WHL_NAME="dist/redis_stack_wheel-${PACKAGE_VERSION}-${BUILD_TAG}-${{ matrix.abi_tag }}-${{ matrix.manylinux_version }}_x86_64.whl"
         mv dist/redis_stack_wheel-${PACKAGE_VERSION}-py3-none-any.whl $WHL_NAME
         echo $WHL_NAME
 
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: distribution-linux-${{ matrix.python_version }}
+        name: distribution-linux-${{ matrix.python_version }}-${{ matrix.ubuntu_version }}
         path: dist/
 
  build-macos-x64:
