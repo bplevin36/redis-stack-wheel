@@ -77,7 +77,7 @@ jobs:
     - name: Upload distribution
       uses: actions/upload-artifact@v4
       with:
-        name: distribution-linux-${{ matrix.python_version }}
+        name: distribution-linux-${{ matrix.python_version }}-${{ matrix.ubuntu_version }}
         path: dist/
 
  build-macos-x64:
