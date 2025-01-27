@@ -30,13 +30,11 @@ jobs:
   strategy:
     matrix:
       python_version:
-        - "3.9"
         - "3.11"
       include:
         - python_version: "3.9"
-          abi_tag: "cp39-cp39"
-        - python_version: "3.11"
-          abi_tag: "cp311-cp311"
+          # the wheels end up being the same for all Linux python versions because it's just binaries
+          abi_tag: "py3-none"
   steps:
     - name: Download checkout
       uses: actions/download-artifact@v4
