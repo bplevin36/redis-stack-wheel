@@ -32,7 +32,7 @@ jobs:
         - "3.9"
         - "3.11"
       redis_version:
-        - `7.4.0-v1`
+        - "7.4.0-v1"
       include:
         - python_version: "3.9"
           abi_tag: "cp39-cp39"
